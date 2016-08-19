@@ -1,7 +1,7 @@
 {
   "name": "thorin-plugin-discovery",
   "author": "UNLOQ Systems",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "dependencies": {
   },
   "description": "Thorin.js discovery plugin",
