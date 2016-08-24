@@ -21,6 +21,7 @@ module.exports = function (thorin, opt, pluginName) {
       name: thorin.id,                      // this is an optional unique service name.
       proto: 'http',                        // the default protocol to use.
       ttl: 60,                              // this is the default time-to-live for the registry. We will refresh the registry within approx 2/3 of the ttl.
+      timeout: null,                        // number of ms to timeout when other nodes are calling this. Overrides the default timeout
       tags: [],                              // additional tags that can be saved per-service.
       host: 'internal',                       // Specifies the IP or host on which the current node is reachable. Values are:
                                             // internal -> 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
