@@ -4,7 +4,7 @@
  */
 const initAction = require('./lib/discoveryAction'),
   initRegistry = require('./lib/registry'),
-  initAuth = require('./lib/authorization/proxy'),
+  initMiddleware = require('./lib/middleware/index'),
   initBoot = require('./lib/boot');
 module.exports = function (thorin, opt, pluginName) {
   opt = thorin.util.extend({
@@ -37,7 +37,7 @@ module.exports = function (thorin, opt, pluginName) {
     pluginObj = {};
 
   initRegistry(thorin, opt, pluginObj);
-  initAuth(thorin, opt, pluginObj);
+  initMiddleware(thorin, opt, pluginObj);
   initBoot(thorin, opt, pluginObj);
   initAction(thorin, opt, pluginObj);
 
