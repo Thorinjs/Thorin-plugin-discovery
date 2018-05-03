@@ -18,12 +18,14 @@ module.exports = function (thorin, opt, pluginName) {
     retry: 1,                               // the number of retries we will perform per service call.
     delay: 0,                               // the number of milliseconds to delay the initial registration. Default disabled.
     timeout: 3000,                          // the default timeout between service calls
+    registry: null,                         // We can manually set a map of {serviceName:url} to use, withouth polling an external discovery system
+    refresh: true,                          // Setting this to false will not refresh the registry.
     service: {
       type: thorin.app,                     // this is the service type. This is the "service name" within the registry.
       name: thorin.id,                      // this is an optional unique service name.
       proto: 'http',                        // the default protocol to use.
       version: null,                          // The numeric version of the current application version. This is to roll out older version versions of the app, so that we have zero-downtime upgrades
-                                            // IF this variable is not set, we look into process.env.APP_VERSION and if it is a number, we use it.
+      // IF this variable is not set, we look into process.env.APP_VERSION and if it is a number, we use it.
       ttl: 60,                              // this is the default time-to-live for the registry. We will refresh the registry within approx 2/3 of the ttl.
       timeout: null,                        // number of ms to timeout when other nodes are calling this. Overrides the default timeout
       tags: [],                              // additional tags that can be saved per-service.
