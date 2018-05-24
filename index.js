@@ -19,6 +19,7 @@ module.exports = function (thorin, opt, pluginName) {
     delay: 0,                               // the number of milliseconds to delay the initial registration. Default disabled.
     timeout: 3000,                          // the default timeout between service calls
     registry: null,                         // We can manually set a map of {serviceName:url} to use, withouth polling an external discovery system
+    registry_env: false,                    // Load services from the process.env.SERVICE_{serviceName} and make a static registry with them.
     refresh: true,                          // Setting this to false will not refresh the registry.
     service: {
       type: thorin.app,                     // this is the service type. This is the "service name" within the registry.
@@ -42,10 +43,23 @@ module.exports = function (thorin, opt, pluginName) {
   if (typeof opt.service === 'object' && opt.service) {
     if (opt.service.version == null && typeof process.env.APP_VERSION !== 'undefined') {
       let ver = process.env.APP_VERSION;
-      if(typeof ver === 'string') ver = parseInt(ver, 10);
-      if(typeof ver === 'number' && ver > 0) {
+      if (typeof ver === 'string') ver = parseInt(ver, 10);
+      if (typeof ver === 'number' && ver > 0) {
         opt.service.version = ver;
       }
+    }
+  }
+  if (opt.registry_env !== false) {
+    let prefix = (typeof opt.registry_env === 'string' ? opt.registry_env : 'SERVICE_');
+    let newRegistry = (typeof opt.registry === 'object' && opt.registry ? opt.registry : {});
+    Object.keys(process.env).forEach((key) => {
+      if (key.indexOf(prefix) !== 0) return;
+      let serviceName = key.substr(prefix.length),
+        url = process.env[key];
+      newRegistry[serviceName] = url;
+    });
+    if (Object.keys(newRegistry).length !== 0) {
+      opt.registry = newRegistry;
     }
   }
 
